@@ -1,0 +1,31 @@
+* { box-sizing: border-box; }
+:root { font-family: Arial, sans-serif; color: #17334c; background: #f3f6fa; line-height: 1.5; }
+body { margin: 0; }
+header { background: #004080; color: white; padding: 22px max(24px, calc((100vw - 1100px) / 2)); display: flex; justify-content: space-between; gap: 20px; }
+.marca { font-size: 21px; font-weight: bold; }
+header span { font-size: 14px; align-self: center; }
+main { max-width: 1150px; margin: 42px auto; padding: 0 24px; }
+.etiqueta { font-size: 12px; letter-spacing: .12em; color: #456b8b; font-weight: bold; }
+h1 { font-size: clamp(27px, 4vw, 38px); margin: 8px 0; }
+.introduccion, .tarjeta > p { color: #526b80; }
+.paneles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 30px; }
+.tarjeta { background: white; border: 1px solid #d7e1eb; border-radius: 12px; padding: 28px; }
+.numero { color: #0b5c9a; font-size: 13px; font-weight: bold; }
+h2 { margin: 7px 0; font-size: 25px; }
+form { margin-top: 24px; }
+label { display: block; font-weight: bold; margin: 18px 0 7px; }
+input { width: 100%; min-height: 46px; border: 1px solid #8ca5bb; border-radius: 6px; padding: 10px; font: inherit; }
+small { display: block; color: #526b80; font-size: 12px; margin-top: 5px; }
+button { margin: 24px 0 8px; min-height: 46px; border: 0; border-radius: 6px; background: #004080; color: white; padding: 11px 18px; font: inherit; font-weight: bold; cursor: pointer; }
+button:disabled { opacity: .6; cursor: wait; }
+button:hover { background: #003363; }
+input:focus, button:focus-visible { outline: 3px solid #cc8c29; outline-offset: 3px; }
+.respuesta { background: #f1f5f9; border: 1px solid #dce6ee; border-radius: 7px; padding: 14px; margin-top: 18px; }
+.respuesta p { margin: 0; }
+.respuesta.exito { background: #ecf7ef; border-color: #b8d7bf; }
+.respuesta.error { background: #fff0ee; border-color: #e9b7ae; }
+pre { font-size: 12px; white-space: pre-wrap; overflow-wrap: anywhere; margin-bottom: 0; }
+.nota, footer { font-size: 13px; color: #526b80; }
+.nota { margin-top: 22px; }
+footer { text-align: center; padding: 20px; }
+@media(max-width: 700px) { .paneles { grid-template-columns: 1fr; } header { flex-direction: column; gap: 3px; } header span { align-self: flex-start; } .tarjeta { padding: 22px; } main { margin-top: 28px; } }

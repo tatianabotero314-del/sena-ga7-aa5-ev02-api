@@ -1,0 +1,499 @@
+{
+  "info": {
+    "name": "SENA AA5-EV02 - Pruebas de registro y login",
+    "description": "Laura Tatiana Ciro Botero. API real de AA5-EV01. Ejecutar en orden; el registro genera un nombre único. Diez peticiones, tres verificaciones por petición. Datos ficticios.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8080",
+      "type": "string"
+    },
+    {
+      "key": "usuarioPrueba",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "semilla",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "01 Disponibilidad",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/salud",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "salud"
+          ]
+        },
+        "description": "Resultado esperado: HTTP 200. disponible"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const datos = pm.response.json();",
+              "pm.test(\"Respuesta esperada\", () => pm.expect(datos.estado).to.eql(\"disponible\"));",
+              "pm.test(\"No expone claves ni hash\", () => { pm.expect(datos).not.to.have.property(\"contrasena\"); pm.expect(datos).not.to.have.property(\"password_hash\"); });"
+            ]
+          }
+        }
+      ],
+      "response": []
+    },
+    {
+      "name": "02 Registro correcto",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/registro",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "registro"
+          ]
+        },
+        "description": "Resultado esperado: HTTP 201. Usuario registrado correctamente.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"{{usuarioPrueba}}\",\n  \"contrasena\": \"Practica2026!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Cada registro usa un usuario nuevo para poder repetir la colección.",
+              "const semilla = Date.now().toString();",
+              "pm.collectionVariables.set(\"semilla\", semilla);",
+              "pm.collectionVariables.set(\"usuarioPrueba\", \"taty.\" + semilla);"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+              "const datos = pm.response.json();",
+              "pm.test(\"Respuesta esperada\", () => pm.expect(datos.mensaje).to.eql(\"Usuario registrado correctamente.\"));",
+              "pm.test(\"No expone claves ni hash\", () => { pm.expect(datos).not.to.have.property(\"contrasena\"); pm.expect(datos).not.to.have.property(\"password_hash\"); });"
+            ]
+          }
+        }
+      ],
+      "response": []
+    },
+    {
+      "name": "03 Inicio de sesion correcto",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "login"
+          ]
+        },
+        "description": "Resultado esperado: HTTP 200. Autenticación satisfactoria.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"{{usuarioPrueba}}\",\n  \"contrasena\": \"Practica2026!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const datos = pm.response.json();",
+              "pm.test(\"Respuesta esperada\", () => pm.expect(datos.mensaje).to.eql(\"Autenticación satisfactoria.\"));",
+              "pm.test(\"No expone claves ni hash\", () => { pm.expect(datos).not.to.have.property(\"contrasena\"); pm.expect(datos).not.to.have.property(\"password_hash\"); });"
+            ]
+          }
+        }
+      ],
+      "response": []
+    },
+    {
+      "name": "04 Contrasena incorrecta",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "login"
+          ]
+        },
+        "description": "Resultado esperado: HTTP 401. Error en la autenticación.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"{{usuarioPrueba}}\",\n  \"contrasena\": \"Incorrecta2026!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));",
+              "const datos = pm.response.json();",
+              "pm.test(\"Respuesta esperada\", () => pm.expect(datos.mensaje).to.eql(\"Error en la autenticación.\"));",
+              "pm.test(\"No expone claves ni hash\", () => { pm.expect(datos).not.to.have.property(\"contrasena\"); pm.expect(datos).not.to.have.property(\"password_hash\"); });"
+            ]
+          }
+        }
+      ],
+      "response": []
+    },
+    {
+      "name": "05 Registro duplicado",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/registro",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "registro"
+          ]
+        },
+        "description": "Resultado esperado: HTTP 409. El nombre de usuario ya está registrado.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"{{usuarioPrueba}}\",\n  \"contrasena\": \"Practica2026!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));",
+              "const datos = pm.response.json();",
+              "pm.test(\"Respuesta esperada\", () => pm.expect(datos.mensaje).to.eql(\"El nombre de usuario ya está registrado.\"));",
+              "pm.test(\"No expone claves ni hash\", () => { pm.expect(datos).not.to.have.property(\"contrasena\"); pm.expect(datos).not.to.have.property(\"password_hash\"); });"
+            ]
+          }
+        }
+      ],
+      "response": []
+    },
+    {
+      "name": "06 Usuario inexistente",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "login"
+          ]
+        },
+        "description": "Resultado esperado: HTTP 401. Error en la autenticación.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"no.existe.{{semilla}}\",\n  \"contrasena\": \"Practica2026!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));",
+              "const datos = pm.response.json();",
+              "pm.test(\"Respuesta esperada\", () => pm.expect(datos.mensaje).to.eql(\"Error en la autenticación.\"));",
+              "pm.test(\"No expone claves ni hash\", () => { pm.expect(datos).not.to.have.property(\"contrasena\"); pm.expect(datos).not.to.have.property(\"password_hash\"); });"
+            ]
+          }
+        }
+      ],
+      "response": []
+    },
+    {
+      "name": "07 Campos vacios",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/registro",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "registro"
+          ]
+        },
+        "description": "Resultado esperado: HTTP 400. Datos inválidos.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"\",\n  \"contrasena\": \"\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+              "const datos = pm.response.json();",
+              "pm.test(\"Respuesta esperada\", () => pm.expect(datos.mensaje).to.eql(\"Datos inválidos.\"));",
+              "pm.test(\"No expone claves ni hash\", () => { pm.expect(datos).not.to.have.property(\"contrasena\"); pm.expect(datos).not.to.have.property(\"password_hash\"); });"
+            ]
+          }
+        }
+      ],
+      "response": []
+    },
+    {
+      "name": "08 Contrasena corta",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/registro",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "registro"
+          ]
+        },
+        "description": "Resultado esperado: HTTP 400. Datos inválidos.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"{{usuarioPrueba}}\",\n  \"contrasena\": \"123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+              "const datos = pm.response.json();",
+              "pm.test(\"Respuesta esperada\", () => pm.expect(datos.mensaje).to.eql(\"Datos inválidos.\"));",
+              "pm.test(\"No expone claves ni hash\", () => { pm.expect(datos).not.to.have.property(\"contrasena\"); pm.expect(datos).not.to.have.property(\"password_hash\"); });"
+            ]
+          }
+        }
+      ],
+      "response": []
+    },
+    {
+      "name": "09 Campo no permitido",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/registro",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "registro"
+          ]
+        },
+        "description": "Resultado esperado: HTTP 400. JSON inválido o campos no permitidos.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"{{usuarioPrueba}}\",\n  \"contrasena\": \"Practica2026!\",\n  \"rol\": \"ADMIN\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+              "const datos = pm.response.json();",
+              "pm.test(\"Respuesta esperada\", () => pm.expect(datos.mensaje).to.eql(\"JSON inválido o campos no permitidos.\"));",
+              "pm.test(\"No expone claves ni hash\", () => { pm.expect(datos).not.to.have.property(\"contrasena\"); pm.expect(datos).not.to.have.property(\"password_hash\"); });"
+            ]
+          }
+        }
+      ],
+      "response": []
+    },
+    {
+      "name": "10 Limite UTF8",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/registro",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "registro"
+          ]
+        },
+        "description": "Resultado esperado: HTTP 400. La contraseña supera el límite de 72 bytes en UTF-8.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"{{usuarioPrueba}}\",\n  \"contrasena\": \"áááááááááááááááááááááááááááááááááááááááá\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+              "const datos = pm.response.json();",
+              "pm.test(\"Respuesta esperada\", () => pm.expect(datos.mensaje).to.eql(\"La contraseña supera el límite de 72 bytes en UTF-8.\"));",
+              "pm.test(\"No expone claves ni hash\", () => { pm.expect(datos).not.to.have.property(\"contrasena\"); pm.expect(datos).not.to.have.property(\"password_hash\"); });"
+            ]
+          }
+        }
+      ],
+      "response": []
+    }
+  ]
+}

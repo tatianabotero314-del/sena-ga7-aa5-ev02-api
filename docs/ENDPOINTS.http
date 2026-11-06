@@ -1,0 +1,23 @@
+### Registrar una cuenta ficticia (201; si ya existe, 409)
+POST http://127.0.0.1:8080/api/registro
+Content-Type: application/json
+
+{"usuario":"tatiana.demo","contrasena":"Practica2026!"}
+
+### Autenticación correcta (200), después del registro
+POST http://127.0.0.1:8080/api/login
+Content-Type: application/json
+
+{"usuario":"tatiana.demo","contrasena":"Practica2026!"}
+
+### Autenticación incorrecta (401)
+POST http://127.0.0.1:8080/api/login
+Content-Type: application/json
+
+{"usuario":"tatiana.demo","contrasena":"Incorrecta2026!"}
+
+### Validación incorrecta (400)
+POST http://127.0.0.1:8080/api/registro
+Content-Type: application/json
+
+{"usuario":"","contrasena":"123"}

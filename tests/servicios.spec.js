@@ -1,0 +1,23 @@
+import { test, expect } from '@playwright/test';
+test('registro, éxito, error y validación mediante los servicios reales', async ({ page }) => {
+  await page.goto('/');
+  await page.getByLabel('Usuario para registro', { exact: true }).fill('prueba.navegador');
+  await page.getByLabel('Contraseña para registro', { exact: true }).fill('Practica2026!');
+  await page.getByRole('button', { name: 'Registrar usuario' }).click();
+  await expect(page.locator('#registro-respuesta')).toContainText('HTTP 201');
+  await page.screenshot({ path: 'test-results/01-registro.png', fullPage: true });
+  await page.getByLabel('Usuario para inicio de sesión', { exact: true }).fill('prueba.navegador');
+  await page.getByLabel('Contraseña para inicio de sesión', { exact: true }).fill('Practica2026!');
+  await page.getByRole('button', { name: 'Comprobar credenciales' }).click();
+  await expect(page.locator('#login-respuesta')).toContainText('HTTP 200');
+  await expect(page.locator('#login-respuesta')).toContainText('Autenticación satisfactoria.');
+  await page.screenshot({ path: 'test-results/02-login-correcto.png', fullPage: true });
+  await page.getByLabel('Contraseña para inicio de sesión', { exact: true }).fill('Incorrecta2026!');
+  await page.getByRole('button', { name: 'Comprobar credenciales' }).click();
+  await expect(page.locator('#login-respuesta')).toContainText('HTTP 401');
+  await page.screenshot({ path: 'test-results/03-login-error.png', fullPage: true });
+  await page.getByLabel('Usuario para registro', { exact: true }).fill('');
+  await page.getByRole('button', { name: 'Registrar usuario' }).click();
+  await expect(page.locator('#registro-respuesta')).toContainText('HTTP 400');
+  await page.screenshot({ path: 'test-results/04-validacion.png', fullPage: true });
+});

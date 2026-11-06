@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Registro e inicio de sesión · SENA</title><link rel="stylesheet" href="styles.css"><script src="app.js" defer></script></head>
+<body><header><div class="marca">Servicios de acceso</div><span>SENA · Caso AA5-EV01</span></header>
+<main><p class="etiqueta">SISTEMA DE SELECCIÓN DE PERSONAL · PRÁCTICA</p>
+<h1>Registro e inicio de sesión</h1><p class="introduccion">Crea un usuario de práctica y comprueba sus credenciales.</p>
+<div class="paneles">
+<section class="tarjeta"><div class="numero">01</div><h2>Registro</h2><p>Crea una cuenta con un nombre único.</p>
+<form id="registro" novalidate>
+<label for="registro-usuario">Usuario para registro</label><input id="registro-usuario" name="usuario" autocomplete="username" maxlength="80" required aria-describedby="regla-usuario">
+<small id="regla-usuario">De 3 a 30 letras sin tildes, números, puntos o guiones.</small>
+<label for="registro-clave">Contraseña para registro</label><input id="registro-clave" name="contrasena" type="password" autocomplete="new-password" minlength="8" maxlength="64" required aria-describedby="regla-clave">
+<small id="regla-clave">De 8 a 64 caracteres; máximo 72 bytes en UTF-8.</small>
+<button type="submit">Registrar usuario</button></form>
+<div class="respuesta" id="registro-respuesta" role="status" aria-live="polite"><p>El resultado aparecerá aquí.</p></div></section>
+<section class="tarjeta"><div class="numero">02</div><h2>Inicio de sesión</h2><p>Utiliza el usuario y la contraseña registrados.</p>
+<form id="login" novalidate>
+<label for="login-usuario">Usuario para inicio de sesión</label><input id="login-usuario" name="usuario" autocomplete="username" maxlength="80" required>
+<label for="login-clave">Contraseña para inicio de sesión</label><input id="login-clave" name="contrasena" type="password" autocomplete="current-password" maxlength="64" required>
+<button type="submit">Comprobar credenciales</button></form>
+<div class="respuesta" id="login-respuesta" role="status" aria-live="polite"><p>El resultado aparecerá aquí.</p></div></section>
+</div><p class="nota">Demostración académica del servicio: el resultado confirma la autenticación; no abre los módulos de Recursos Humanos.</p>
+</main><footer>Laura Tatiana Ciro Botero · GA7-220501096-AA5-EV01 · 2026</footer></body></html>
