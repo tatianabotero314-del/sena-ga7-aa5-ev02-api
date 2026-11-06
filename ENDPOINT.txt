@@ -1,0 +1,20 @@
+API GA7-220501096-AA5-EV02
+Laura Tatiana Ciro Botero
+
+Base local: http://127.0.0.1:8080
+El servidor debe estar iniciado. No es una API pública alojada en GitHub.
+
+POST http://127.0.0.1:8080/api/registro
+Content-Type: application/json
+JSON: {"usuario":"tatiana.demo","contrasena":"Practica2026!"}
+201: registro correcto; 409: usuario duplicado; 400: datos inválidos.
+
+POST http://127.0.0.1:8080/api/login
+Content-Type: application/json
+JSON: {"usuario":"tatiana.demo","contrasena":"Practica2026!"}
+200: autenticación satisfactoria; 401: credenciales incorrectas; 400: datos inválidos.
+
+GET http://127.0.0.1:8080/api/salud
+Sin cuerpo. Respuesta 200: {"estado":"disponible"}.
+
+Sin token requerido para este caso. La respuesta confirma credenciales; no crea una sesión ni permisos.

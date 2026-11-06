@@ -1,0 +1,14 @@
+GA7-220501096-AA5-EV02 — Resultado de la ejecución real en Postman
+Postman de escritorio 12.35.4; Java 17; Spring Boot 3.5.7.
+Runner: Functional, Local, una iteración, 10 solicitudes seleccionadas.
+Passed: 30. Failed: 0. Skipped: 0. Errors: 0.
+Duración observada: 3 s 117 ms. Tiempo medio de respuesta: 193 ms.
+Casos y HTTP: salud 200; registro 201; login 200; clave incorrecta 401;
+duplicado 409; usuario inexistente 401; vacíos 400; clave corta 400;
+campo adicional 400; exceso de bytes UTF-8 400.
+Cada caso comprueba código, mensaje/estado esperado y ausencia de campos contrasena/password_hash.
+Captura original: evidencias/postman/13-runner-resultados.png.
+Código comprobado: c2112cbf2716f1c6afb65c4a96c03369ec88d673.
+Repositorio: https://github.com/tatianabotero314-del/sena-ga7-aa5-ev02-api
+Comprobación complementaria Maven/Newman:
+https://github.com/tatianabotero314-del/sena-ga7-aa5-ev02-api/actions/runs/42153678077

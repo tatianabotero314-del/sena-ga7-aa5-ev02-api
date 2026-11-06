@@ -1,0 +1,40 @@
+Capturas secuenciales reales de Postman, editadas con pausas de lectura. Explicaciones en subtítulos; el video no contiene narración oral.
+
+00:00 — Presentación: API de registro e inicio de sesión
+Evidencia API, de Laura Tatiana Ciro Botero. Esta demostración muestra pruebas reales en Postman, contra Spring Boot. Las explicaciones aparecen en subtítulos. Los usuarios y contraseñas son ficticios.
+
+00:13 — 01 · Disponibilidad · GET /api/salud
+Primero consultamos la disponibilidad del servidor. La ruta API salud responde doscientos, con estado disponible. La API está funcionando.
+
+00:23 — 02 · Registro correcto · POST /api/registro
+Enviamos usuario y contraseña en formato JSON. El registro responde doscientos uno: usuario registrado correctamente. El nombre se genera para evitar duplicados entre ejecuciones.
+
+00:34 — 03 · Inicio de sesión correcto · POST /api/login
+Usamos las mismas credenciales para iniciar sesión. La respuesta doscientos confirma autenticación satisfactoria. Este caso verifica las credenciales y no genera un token.
+
+00:46 — 04 · Contraseña incorrecta · HTTP 401
+Cambiamos la contraseña. El servidor responde cuatrocientos uno: error en la autenticación. Es el resultado esperado para una contraseña incorrecta.
+
+00:56 — 05 · Registro duplicado · HTTP 409
+Intentamos registrar el mismo usuario otra vez. La respuesta cuatrocientos nueve informa que el nombre ya está registrado. Así se comprueba la restricción de unicidad.
+
+01:08 — 06 · Usuario inexistente · HTTP 401
+Ahora enviamos un usuario inexistente. Recibimos cuatrocientos uno y el mismo mensaje genérico, sin revelar si una cuenta existe.
+
+01:18 — 07 · Campos vacíos · HTTP 400
+Enviamos los dos campos vacíos. El servidor responde cuatrocientos y explica los datos inválidos. No se crea una cuenta incompleta.
+
+01:28 — 08 · Contraseña corta · HTTP 400
+Probamos una contraseña de tres caracteres. Se rechaza con cuatrocientos, porque la longitud mínima requerida es de ocho caracteres.
+
+01:38 — 09 · Campo adicional no permitido · HTTP 400
+Agregamos un campo rol con valor administrador. El servidor rechaza el JSON con cuatrocientos: no permite campos adicionales.
+
+01:48 — 10 · Límite de bytes UTF-8 · HTTP 400
+Cuarenta letras a con tilde ocupan ochenta bytes en UTF ocho. Se rechazan porque superan el límite de setenta y dos bytes de la contraseña.
+
+02:00 — Runner · 10 solicitudes y 30 comprobaciones
+Finalmente ejecutamos la colección completa con el Runner. El resultado es treinta comprobaciones aprobadas, cero fallos y cero errores. Cada petición valida su código, su mensaje y que no se expongan contraseña ni hash.
+
+02:15 — Entrega · Proyecto, PDF, colección, video y endpoints
+El paquete incluye el proyecto, la colección, este video, los endpoints y el documento con capturas. El PDF enlaza el repositorio de GitHub. La dirección de la API es local y requiere iniciar el servidor.
